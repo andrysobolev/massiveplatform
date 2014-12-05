@@ -33,12 +33,17 @@
 
 <p>Welcome to Massive Platform, <a href='http://www.travelmassive.com'>Travel Massive's</a> open-source community and event platform.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>
+<img style="border: 1px solid #eee; padding: 4px;" src="massiveplatform_sample_chapter.png">
+</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p><h3>What Is Massive Platform?</h3>
+<a href='http://www.travelmassive.com'>Travel Massive</a> is a world-wide community in more than 60 cities, connecting thousands of travel insiders at locally organised events to empower change in the travel industry and make travel better.</p>
+<p>
+We developed <span style='text-decoration: underline;'>Massive Platform</span> to help our members connect more easily and to provide a centralized place for profiles and events. We outgrew all the usual tools such as Facebook pages and Meetup, and we wanted our own community platform, so we built one. We've made our platform open-source so that other communities can benefit from and build on our efforts and help make this product awesome.</p>
+<p>
+Right now, this is beta (probably alpha) software that is nearing production release, but we'd love to have more contributors. If you are an interested developer, follow the instructions below to get started.</p>
+
 
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key Features</h3>
@@ -174,56 +179,176 @@ Our Core focus is on developing features to support the needs of the Travel Mass
   <li>PHP 5.5+</li>
   <li>A long train ride</li>
 </ol>
+</p>
 
+<p>
 If you are developing with Ubuntu (our preference) you can get up and running easily by installing the following packages:
 <pre><code>sudo apt-get update
 sudo apt-get install mysql-server php5-mysql
 sudo apt-get install nginx
 sudo apt-get install php5-fpm
+sudo apt-get install drush
 </pre></code>
+</p>
 
+<p>
 Once you've got nginx, MySQL and PHP, then you're ready to go. These examples were developed for our Ubuntu Linux development environment so you may need to modify to suit your own set-up.
+</p>
 
-<br><br>
-
-1. Get the source code
+<p>
+<h4>1. Get the source code</h4>
 <pre><code>$ cd /var/www
 $ git clone https://github.com/travelmassive/massiveplatform.git \
 massiveplatform
+Cloning into 'massiveplatform'...
+remote: Counting objects: 133588, done.
+remote: Compressing objects: 100% (1023/1023), done.
+remote: Total 133588 (delta 162), reused 0 (delta 0)
+Receiving objects: 100% (133588/133588), 125.97 MiB | 1.08 MiB/s, done.
+Resolving deltas: 100% (94854/94854), done.
+Checking connectivity... done.
+Checking out files: 100% (6926/6926), done.
 </code></pre>
+</p>
 
-2. Run MySQL
-<pre><code>ubuntu@localhost$ mysql</code></pre>
 
-3. Now, create your database
-<pre><code>mysql> create database travelmassive;
+<p>
+<h4>2. Create database and permissions</h4>
+<pre><code>
+ubuntu@localhost$ mysql
+
+mysql> create database massiveplatform;
 Query OK, 1 row affected (0.01 sec)
-</code></pre>
 
-4. Next, set your permissions
-<pre><code>mysql> grant all on travelmassive.* to travelmassive@localhost
-  identified by '<yourpassword>';
+mysql> grant all on massiveplatform.* to massiveplatform@localhost
+  identified by 'massiveplatform';
 Query OK, 0 rows affected (0.03 sec)
 </code></pre>
 
-<ol>
-  <li></li>
-  <li></li>
-  <li>PHP 5.5+</li>
-  <li></li>
-</ol>
-
+(Note: if you change any of the mysql database details, make sure you configure sites/default/settings.php accordingly later on.)
 </p>
+
+<p>
+<h4>3. Create an nginx configuration file</h4>
+We've created a sample configuration file in the 'massiveplatform_setup_files' folder to get started.
+<pre><code>cd /var/www/massiveplatform
+sudo cp massiveplatform_setup_files/localdev.massiveplatform.com.conf /etc/nginx/site-enabled
+!/etc/init.d/nginx restart
+</code></pre>
+</p>
+
+<p>
+<h4>4. Edit your php.info</h4>
+Change the following variables in your php.ini as set out below (On Ubuntu: /etc/php5/fpm/php.ini)
+<pre><code># Required by nginx php usage
+cgi.fix_pathinfo = 0
+
+# Support users uploading large profile pictures from smart phones
+post_max_size = 8M
+</code></pre>
+
+Restart php5-fpm service after modifying php.ini
+<pre><code>service php5-fpm restart
+</code></pre>
+</p>
+
+<p>
+<h4>5. Import Sample MySQL database</h4>
+<pre><code>cd /var/www/massiveplatform
+zcat massiveplatform_setup_files/massiveplatform.sql.gz | mysql -u massiveplatform -p massiveplatform 
+</code></pre>
+</p>
+
+<p>
+<h4>6. Copy settings.php and non-git files into sites/default</h4>
+<pre><code>cd /var/www/massiveplatform
+mkdir sites/default
+cp massiveplatform_setup_files/settings.php sites/default
+# note - edit settings.php here if you changed database name or password
+tar zxvf massiveplatform_setup_files/sites.tar.gz
+</code></pre>
+</p>
+
+<p>
+<h4>7. Fix permissions - allow web server write access to default/files</h4>
+<pre><code>sudo chown -R :www-data /var/www/massiveplatform
+sudo chmod -R 775 /var/www/massiveplatform/sites/default/files
+sudo chmod 444 /var/www/massiveplatform/sites/default/settings.php
+</code></pre>
+Note: This works for local development, but on a production server you should review all file permissions.
+</p>
+
+
+<p>
+<h4>8. Enable the redirect module</h4>
+<pre><code>cd /var/www/massiveplatform
+drush dl redirect
+drush en redirect
+</pre></code>
+(If you get an error such as "Failed opening required '/var/www/massiveplatform/sites/all/modules/contrib/redirect/redirect.module'" then you need to do this step.)
+</p>
+
+
+<p>
+<h4>9. Ready!</h4>
+<p>
+Ok, now point your browser to your web server. In our example configuration, we set it to "localdev.massiveplatform.com". If you are developing on your local server you can probably use "localhost", or if you have configured hosts files you can use "localdev.massiveplatform.com"
+</p>
+<p>
+If you have succesfully installed Massive Platform, your web browser should look something like this:<br><br>
+<img src="massiveplatform_first_screen.png">
+</p>
+
+<p>
+<h4>10. Default Logins</h4>
+Here are the default logins for the site (in "username / password" format):
+<ul>
+  <li>Demo account: "demo / demo"</li>
+  <li>Admin account: "admin / testing"</li>
+  <li>Sample users: "username / massive" (example: ian / massive)</li>
+</ul>
+</p>
+
+<p>
+<h4>Get this far? Let Us Know!</h4>
+  If you get this far and got your local development site running, we'd love to know! Send an email to ian@travelmassive.com and also provide any tips on improving these installation instructions so we can add it for others. Thanks!
+</p>
+
+<p>
+<h3>Development Tips</h3>
+
+<h4>Handy drush commands</h4>
+<ul>
+  <li>drush cc all <span style='font-weight: bold;'>clear the cache</span></li>
+  <li>drush fd <span style='font-weight: bold;'>view features list</span></li>
+  <li>drush mi --all --rollback --force<span style='font-weight: bold;'>rollback and reload all sample data</span></li>
+</ul>
+</p>
+
+<p>
+<h4>Other tips and tricks</h4>
+<ul>
+  <li>To enable Twitter, edit sites/default/settings.php and include your Twitter OAuth Settings</li>
+  <li>When saving .csv for migration imports, ensure the file has Linux/PHP friendly line breaks and is UTF8 format</li>
+</ul>
+</p>
+
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<ul>
+  <li>Flipside - initial project design, HTML theme and alpha implementation</span></li>
+  <li>Ian C - information architecture, bug fixes, lots of stuff</span></li>
+  <li>Robyn Stanley (<a href="https://github.com/rumpledelf" class="user-mention">@rumpledelf</a>) - bug fixing, event management</span></li>
+  <li>Ryan Cross (<a href="https://github.com/rcross" class="user-mention">@rycross</a>) - final stage project management</span></li>
+</ul>
+</p>
 
 <h3>
 <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="https://help.github.com/pages">https://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Having trouble? Check out the our <a href="https://github.com/travelmassive/massiveplatform/wiki">project wiki (in development)</a> or <a href="https://github.com/travelmassive/massiveplatform/issues">issue tracker</a>. You can also contact us at <a href="mailto:platform@travelmassive.com">platform@travelmassive.com</a> and we’ll help you sort it out.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/travelmassive">travelmassive</a></p>
