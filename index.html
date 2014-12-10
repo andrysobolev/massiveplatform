@@ -284,6 +284,9 @@ cgi.fix_pathinfo = 0
 
 # Support users uploading large profile pictures from smart phones
 post_max_size = 8M
+
+# Maximum allowed size for uploaded files
+upload_max_filesize = 8M
 </code></pre>
 
 Restart php5-fpm service after modifying php.ini
@@ -361,6 +364,8 @@ Here are the default logins for the site (in "username / password" format):
   <li>drush cc all (<span style='font-weight: bold;'>clear the cache</span>)</li>
   <li>drush fd (<span style='font-weight: bold;'>view features list</span>)</li>
   <li>drush mi --all --rollback --force (<span style='font-weight: bold;'>rollback and reload all sample data</span>)</li>
+  <li>drush pm-disable tm_notifications (<span style='font-weight: bold;'>disable notifications before importing data</span>)</li>
+  <li>drush pm-enable tm_notifications (<span style='font-weight: bold;'>enable notifications after data</span>)</li>
 </ul>
 </p>
 
