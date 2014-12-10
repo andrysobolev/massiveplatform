@@ -227,6 +227,8 @@ sudo apt-get install mysql-server php5-mysql
 sudo apt-get install nginx
 sudo apt-get install php5-fpm
 sudo apt-get install drush
+# for sending mail, your favorite MTA
+sudo apt-get install postfix
 </pre></code>
 </p>
 
@@ -363,8 +365,8 @@ Here are the default logins for the site (in "username / password" format):
 <ul>
   <li>drush cc all (<span style='font-weight: bold;'>clear the cache</span>)</li>
   <li>drush fd (<span style='font-weight: bold;'>view features list</span>)</li>
-  <li>drush mi --all --rollback --force (<span style='font-weight: bold;'>rollback and reload all sample data</span>)</li>
   <li>drush pm-disable tm_notifications (<span style='font-weight: bold;'>disable notifications before importing data</span>)</li>
+  <li>drush mi --all --rollback --force (<span style='font-weight: bold;'>rollback and reload all sample data</span>)</li>
   <li>drush pm-enable tm_notifications (<span style='font-weight: bold;'>enable notifications after data</span>)</li>
 </ul>
 </p>
@@ -375,6 +377,7 @@ Here are the default logins for the site (in "username / password" format):
   <li>To enable Twitter, edit sites/default/settings.php and include your Twitter OAuth Settings</li>
   <li>When saving .csv for migration imports, ensure the file has Linux/PHP friendly line breaks and is UTF8 format</li>
   <li>To edit SASS stylesheets you'll need compass installed (apt-get install compass), then run "compass watch sites/all/themes/tm" to update css files</li>
+  <li>(Postfix users) BCC all notification emails. Add the line "always_bcc = ubuntu" to your /etc/postfix/main.cf and restart postfix</li>
 </ul>
 </p>
 
