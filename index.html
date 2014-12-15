@@ -170,6 +170,7 @@ Right now, this is beta (probably alpha) software that is nearing production rel
   <li>Code Driven Features</li>
   <li>Data Migration With CSV</li>
   <li>Display Suite Design</li>
+  <li>Flags for Follow,Join,RSVP</li>
 </ul>
 
 </div>
@@ -378,6 +379,15 @@ Here are the default logins for the site (in "username / password" format):
   <li>When saving .csv for migration imports, ensure the file has Linux/PHP friendly line breaks and is UTF8 format</li>
   <li>To edit SASS stylesheets you'll need compass installed (apt-get install compass), then run "compass watch sites/all/themes/tm" to update css files</li>
   <li>(Postfix users) BCC all notification emails. Add the line "always_bcc = ubuntu" to your /etc/postfix/main.cf and restart postfix</li>
+</ul>
+</p>
+
+<p>
+<h4>Enabling Twine Social Feeds</h4>
+<ul>
+  <li>You can display a social media feed on the front page using a third party widget such as Twine Social.</li>
+  <li>Edit sites/default/settings.php and set $conf['tm_enable_fontpage_socialfeeds'] = true;</li>
+  <li>Set your twinesocial URL in themes/tm/templates/frontpage-socialfeeds.tpl.php</li>
 </ul>
 </p>
 
