@@ -378,7 +378,11 @@ Here are the default logins for the site (in "username / password" format):
   <li>To enable Twitter, edit sites/default/settings.php and include your Twitter OAuth Settings</li>
   <li>When saving .csv for migration imports, ensure the file has Linux/PHP friendly line breaks and is UTF8 format</li>
   <li>To edit SASS stylesheets you'll need compass installed (apt-get install compass), then run "compass watch sites/all/themes/tm" to update css files</li>
-  <li>(Postfix users) BCC all notification emails. Add the line "always_bcc = ubuntu" to your /etc/postfix/main.cf and restart postfix</li>
+  <li>For testing emails, add this setting to sites/default/settings.php to write emails to /tmp/DevelMailLog
+    <span><code>$conf['mail_system'] = array(
+'default-system' => 'DevelMailLog',
+);</code></span>
+  </li>
 </ul>
 </p>
 
