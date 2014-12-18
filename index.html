@@ -83,6 +83,7 @@ Right now, this is beta (probably alpha) software that is nearing production rel
   <li>Follow Members</li>
   <li>Approved Users Badge</li>
   <li>Chapter Leaders</li>
+  <li>Industry Segments</li>
 </ul>
 </div>
 
@@ -127,6 +128,7 @@ Right now, this is beta (probably alpha) software that is nearing production rel
   <li>Company Profile Pages</li>
   <li>Multiple Profile Managers</li>
   <li>List Companies</li>
+  <li>Industry Segments</li>
   <li>Filter Companies By Country</li>
   <li>Filter Companies By Segment</li>
   <li>Follow Companies</li>
@@ -141,11 +143,10 @@ Right now, this is beta (probably alpha) software that is nearing production rel
 <h4>Notification Features</h4>
 <ul>
   <li>Welcome Approved members</li>
+  <li>Customized HTML Email Announcements</li>
   <li>Notify on new Follower</li>
   <li>Notify on new Chapter Member</li>
-  <li>Notify on event Register</li>
-  <li>Notify on event Waitlist</li>
-  <li>Notify on event Unregister</li>
+  <li>Notify on event RSVP/Waitlist</li>
   <li>Subscribe to Newsletter</li>
 </ul>
 </div>
@@ -154,7 +155,9 @@ Right now, this is beta (probably alpha) software that is nearing production rel
   <h4>Other Features</h4>
   <ul>
     <li>Responsive HTML5 Design</li>
+    <li>Clean HTML Emails</li>
     <li>Mobile / Tablet / Desktop</li>
+    <li>Follow / Join Rate Limits</li>
     <li>Search Content</li>
     <li>Google Universal Analytics (TODO)</li>
   </ul>
@@ -380,8 +383,9 @@ Here are the default logins for the site (in "username / password" format):
   <li>To edit SASS stylesheets you'll need compass installed (apt-get install compass), then run "compass watch sites/all/themes/tm" to update css files</li>
   <li>For testing emails, add the following to sites/default/settings.php to write emails to /tmp/DevelMailLog:<br>$conf['mail_system'] = array(
 'default-system' => 'DevelMailLog',
-);
-  </li>
+);</li>
+  <li>Update your industry taxonomy from massiveplatform_setup_files/segment_taxonomy_import.csv, use import_csv module.</li>
+
 </ul>
 </p>
 
